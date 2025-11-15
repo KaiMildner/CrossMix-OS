@@ -205,5 +205,13 @@
 	"201": "Tasta A",
 	"202": "Comandă rapidă OSD",
 	"203": "Vizibilitate File",
-	"204": "Dosar"
+	"204":  "Dosar",
+	"205":  "Activează sunetul tastelor",
+	"206":  "Zonă moartă",
+	"207":  "Zonă moartă joystick stânga",
+	"208":  "Zonă moartă joystick dreapta",
+	"209":  "UI folosește joystick",
+	"210":  "Dezvoltator",
+	"211":  "Activează SSH",
+	"212":  "Caută tot"
 }

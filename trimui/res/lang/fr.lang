@@ -205,5 +205,13 @@
 	"201":	"A-bouton",
 	"202":	"Raccourci clavier OSD",
 	"203":	"Visibilité des onglets",
-	"204":	"Dossier"
+	"204":	"Dossier",
+	"205":	"Activer le son des touches",
+	"206":	"Zone morte",
+	"207":	"Zone morte joystick gauche",
+	"208":	"Zone morte joystick droit",
+	"209":	"Interface utilise le joystick",
+	"210":	"Développeur",
+	"211":	"Activer SSH",
+	"212":	"Tout rechercher"
 }

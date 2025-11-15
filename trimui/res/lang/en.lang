@@ -19,7 +19,7 @@
 	"15":	"Settings",
 	"16":	"GAME INFO",
 	"17":	"DEVICE INFO",
-	"18":	"Recents",
+	"18":	"Recent",
 	"19":	"File",
 	"20":	"ADC INFO",
 	"21":	"EncDec Test",
@@ -56,7 +56,7 @@
 	"52":	"Remove",
 	"53":	"Refresh",
 	"54":	"Refresh Roms",
-	"55":	"Add Favourite",
+	"55":	"Add To Favorites",
 	"56":	"Upgrade",
 	"57":	"Update system?",
 	"58":	"SD space low\n%dM left",
@@ -205,5 +205,13 @@
 	"201":	"A-Key",
 	"202":	"OSD Shortcut",
 	"203":	"Tab Visibility",
-	"204":	"Folder"
+	"204":	"Folder",
+	"205":	"Enable Keytone",
+	"206":	"Dead Zone",
+	"207":	"Left Joystick Dead Zone",
+	"208":	"Right Joystick Dead Zone",
+	"209":	"UI Use Joystick",
+	"210":	"Developer",
+	"211":	"Enable SSH",
+	"212":	"Search All"
 }

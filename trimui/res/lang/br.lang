@@ -205,5 +205,13 @@
 	"201":  "tecla A",
 	"202":  "Tecla de atalho OSD",
 	"203":  "Visibilidade das abas",
-	"204":  "Pasta"
+	"204":  "Pasta",
+	"205":  "Ativar som das teclas",
+	"206":  "Zona morta",
+	"207":  "Zona morta do joystick esquerdo",
+	"208":  "Zona morta do joystick direito",
+	"209":  "Interface usa joystick",
+	"210":  "Desenvolvedor",
+	"211":  "Ativar SSH",
+	"212":  "Pesquisar tudo"
 }

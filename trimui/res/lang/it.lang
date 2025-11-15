@@ -205,5 +205,13 @@
 	"201": "Tasto A",
 	"202": "Tasto di scelta rapida OSD",
 	"203": "Visibilità schede",
-	"204": "Cartella"
+	"204": "Cartella",
+	"205": "Abilita suono tasti",
+	"206": "Zona morta",
+	"207": "Zona morta joystick sinistro",
+	"208": "Zona morta joystick destro",
+	"209": "UI usa joystick",
+	"210": "Sviluppatore",
+	"211": "Abilita SSH",
+	"212": "Cerca tutto"
 }

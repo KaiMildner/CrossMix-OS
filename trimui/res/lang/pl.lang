@@ -205,5 +205,13 @@
 	"201":	"Klawisz A",
 	"202":	"Skrót OSD",
 	"203":	"Widoczność kart",
-	"204":	"Folder"
+	"204":	"Folder",
+	"205":	"Włącz dźwięki klawiszy",
+	"206":	"Strefa martwa",
+	"207":	"Strefa martwa lewego joysticka",
+	"208":	"Strefa martwa prawego joysticka",
+	"209":	"UI używającego joysticka",
+	"210":	"Deweloper",
+	"211":	"Włącz SSH",
+	"212":	"Wyszukaj wszystko"
 }

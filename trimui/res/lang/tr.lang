@@ -205,5 +205,13 @@
 	"201":  "A-Tuşu",
 	"202":  "OSD Kısayolu",
 	"203":  "Sekme Görünürlüğü",
-	"204":  "Klasör"
+	"204":  "Klasör",
+	"205":  "Tuş sesi etkinleştir",
+	"206":  "Ölü bölge",
+	"207":  "Sol joystick ölü bölgesi",
+	"208":  "Sağ joystick ölü bölgesi",
+	"209":  "Arayüz joystick kullanır",
+	"210":  "Geliştirici",
+	"211":  "SSH'yi etkinleştir",
+	"212":  "Hepsini ara"
 }  
