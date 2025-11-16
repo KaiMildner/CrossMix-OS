@@ -2,12 +2,22 @@
 PATH="/mnt/SDCARD/System/bin:$PATH"
 export LD_LIBRARY_PATH="/mnt/SDCARD/System/lib:/usr/trimui/lib:$LD_LIBRARY_PATH"
 
-/mnt/SDCARD/System/usr/trimui/scripts/infoscreen.sh -m "Applying \"$(basename "$0" .sh)\" by default..."
+silent=false
+for arg in "$@"; do
+    if [ "$arg" = "-s" ]; then
+        silent=true
+        break
+    fi
+done
+
+if [ "$silent" = false ]; then
+    /mnt/SDCARD/System/usr/trimui/scripts/infoscreen.sh -m "Applying \"$(basename "$0" .sh)\" by default..."
+fi
 
 json_file="/mnt/SDCARD/System/etc/crossmix.json"
 
 if [ ! -f "$json_file" ]; then
-  echo "{}" >"$json_file"
+    echo "{}" >"$json_file"
 fi
 
 /mnt/SDCARD/System/bin/jq '. += {"SSH": 1}' "$json_file" >"/tmp/json_file.tmp" && mv "/tmp/json_file.tmp" "$json_file"
@@ -23,4 +33,9 @@ nice -2 dropbear -R
 sleep 1
 IP=$(ip route get 1 2>/dev/null | awk '{print $NF;exit}')
 echo "SSH server IP: $IP"
-/mnt/SDCARD/System/usr/trimui/scripts/infoscreen.sh -m "SSH server IP: $IP" -t 4
+if [ "$silent" = false ]; then
+    /mnt/SDCARD/System/usr/trimui/scripts/infoscreen.sh -m "SSH server IP: $IP" -t 4
+fi
+
+# reflect in MainUI for firmware >= v1.1.1
+/usr/trimui/bin/systemval enablessh 1

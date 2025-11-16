@@ -37,9 +37,6 @@ if [ "$version" != "$FW_patched_version" ]; then
     mv /bin/busybox.bak /mnt/SDCARD/System/bin 2>/dev/null
     cp "/mnt/SDCARD/trimui/res/skin/bg.png" "/usr/trimui/res/skin/"
 
-    # set root password
-    echo "root:tina" | chpasswd
-
     # USB Storage app update
     rm "/usr/trimui/apps/usb_storage/"*.png
     cp "/mnt/SDCARD/System/resources/usb_storage/"* "/usr/trimui/apps/usb_storage/"
@@ -60,6 +57,11 @@ if [ "$version" != "$FW_patched_version" ]; then
     # custom shutdown script for "Resume at Boot"
     cp "/mnt/SDCARD/System/usr/trimui/bin/kill_apps.sh" "/usr/trimui/bin/kill_apps.sh"
     chmod a+x "/usr/trimui/bin/kill_apps.sh"
+
+    # custom sshd initd script & disabled by default
+    cp "/mnt/SDCARD/trimui/etc/init.d/sshd" /etc/init.d/sshd
+    chmod a+x /etc/init.d/sshd
+    /etc/init.d/sshd disable
 
     # fix retroarch path for PortMaster
     cp "/mnt/SDCARD/System/usr/trimui/bin/retroarch" "/usr/bin/retroarch"
@@ -196,6 +198,9 @@ if [ "$version" != "$FW_patched_version" ]; then
 fi
 
 ######################### CrossMix-OS at each boot #########################
+
+# override empty password on firmware >= v1.1.1
+echo "root:tina" | chpasswd
 
 # Apply current led configuration
 /mnt/SDCARD/System/etc/led_config.sh &
