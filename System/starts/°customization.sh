@@ -205,6 +205,8 @@ tsp)
     ;;
 tsps)
     hostname "TSPS"
+    /bin/busybox.old modprobe aic8800_fdrv.ko &
+    /bin/busybox.old modprobe aic8800_btlpm.ko &
     ;;
 brick)
     hostname "BRICK"
