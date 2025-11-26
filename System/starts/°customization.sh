@@ -1,6 +1,6 @@
 #!/bin/sh
 export LD_LIBRARY_PATH="/mnt/SDCARD/System/lib:/usr/trimui/lib:$LD_LIBRARY_PATH"
-system_json="/mnt/UDISK/system.json"
+read -r Current_device </etc/trimui_device.txt
 Current_Theme=$(/usr/trimui/bin/systemval theme)
 Current_bg="$Current_Theme/skin/bg.png"
 if [ ! -f "$Current_bg" ]; then
@@ -8,22 +8,19 @@ if [ ! -f "$Current_bg" ]; then
 fi
 
 ################ CrossMix-OS Version Splashscreen ################
-
-version=$(cat /mnt/SDCARD/System/usr/trimui/crossmix-version.txt)
-/mnt/SDCARD/System/usr/trimui/scripts/infoscreen.sh -i "$Current_bg" -m "CrossMix OS v$version"
+read -r version </mnt/SDCARD/System/usr/trimui/crossmix-version.txt
+/mnt/SDCARD/System/usr/trimui/scripts/infoscreen.sh -i "$Current_bg" -m "CrossMix OS v$version" &
 
 ################ CrossMix-OS internal storage Customization ################
-FW_patched_version=$(cat /usr/trimui/crossmix-version.txt)
+read -r FW_patched_version </usr/trimui/crossmix-version.txt
 
 if [ "$version" != "$FW_patched_version" ]; then
 
     if [ -f "/usr/trimui/crossmix-version.txt" ]; then
         CrossMix_Update=1
     else
-        CrossMix_Update=0
+        CrossMix_Update=0 # CrossMix installation on new device or after firmware udpdate
     fi
-
-    Current_FW_Revision=$(grep 'DISTRIB_DESCRIPTION' /etc/openwrt_release | cut -d '.' -f 3)
 
     /mnt/SDCARD/System/usr/trimui/scripts/inputd_switcher.sh
 
@@ -34,7 +31,7 @@ if [ "$version" != "$FW_patched_version" ]; then
     rm -rf /usr/trimui/res/sound/bgm2.mp3
     swapoff -a
     rm -rf /swapfile
-    mv /bin/busybox.bak /mnt/SDCARD/System/bin 2>/dev/null
+    rm /bin/busybox.bak
     cp "/mnt/SDCARD/trimui/res/skin/bg.png" "/usr/trimui/res/skin/"
 
     # USB Storage app update
@@ -72,7 +69,6 @@ if [ "$version" != "$FW_patched_version" ]; then
     # chmod a+x "/usr/bin/poweroff"
 
     # modifying default theme to impact all other themes (Better game image background)
-    # mv "/usr/trimui/res/skin/ic-game-580.png" "/usr/trimui/res/skin/ic-game-580_old.png"
     cp "/mnt/SDCARD/trimui/res/skin/ic-game-580.png" "/usr/trimui/res/skin/ic-game-580.png"
 
     # Fnkey app modifications
@@ -93,7 +89,7 @@ if [ "$version" != "$FW_patched_version" ]; then
             chmod a+x "$app_dest"
         fi
 
-        # Conditional copy to the scene directory
+        # Conditional copy to the scene directory (update enabled scene scripts)
         if [ "$CrossMix_Update" = "1" ]; then
             if [ -f "$scene_dest" ]; then
                 if cp "$src" "$scene_dest"; then
@@ -123,17 +119,22 @@ if [ "$version" != "$FW_patched_version" ]; then
         printf '\n\n[ -n "$SSH_CONNECTION" ] || [ -n "$SSH_CLIENT" ] && . /mnt/SDCARD/System/usr/trimui/scripts/ssh_profile.sh\n' >>/etc/profile
     fi
 
-    # fix potential bad asound configuration
-    # sed -i -e 's/period_size 2048/period_size 1024/' -e 's/period_size 4096/period_size 1024/' -e '/buffer_size 16384/d' "/etc/asound.conf"
-
-    # Apply default CrossMix theme, sound volume, and grid view
-    if [ "$CrossMix_Update" = "0" ]; then
-        if [ ! -f /mnt/UDISK/system.json ]; then
-            cp /mnt/SDCARD/System/usr/trimui/scripts/MainUI_default_system.json /mnt/UDISK/system.json
+    if [ "$CrossMix_Update" = "0" ]; then # This is a fresh internal firmware
+        if -f "/mnt/SDCARD/trimui/firmwares/Last_Automatic_Backup.txt"; then
+            Last_Automatic_Backup=$(cat /mnt/SDCARD/trimui/firmwares/Last_Automatic_Backup.txt)
+            if [ -f "/mnt/SDCARD/System/backups/firmware_settings/$current_device/$Last_Automatic_Backup" ]; then
+                # We have a backup for this device, restoring firmware settings
+                "/mnt/SDCARD/Apps/SystemTools/Menu/TOOLS/FW Settings Save-Load.sh" --restore "/mnt/SDCARD/System/backups/firmware_settings/$current_device/$Last_Automatic_Backup" all
+            fi
         else
-            /usr/trimui/bin/systemval theme "/mnt/SDCARD/Themes/CrossMix - OS/"
-            /usr/trimui/bin/systemval menustylel1 1
-            /usr/trimui/bin/systemval bgmvol 10
+            # No backup, apply default CrossMix theme, sound volume, and grid view
+            if [ ! -f /mnt/UDISK/system.json ]; then
+                cp /mnt/SDCARD/System/usr/trimui/scripts/MainUI_default_system.json /mnt/UDISK/system.json
+            else
+                /usr/trimui/bin/systemval theme "/mnt/SDCARD/Themes/CrossMix - OS/"
+                /usr/trimui/bin/systemval menustylel1 1
+                /usr/trimui/bin/systemval bgmvol 10
+            fi
         fi
     fi
 
@@ -152,22 +153,9 @@ if [ "$version" != "$FW_patched_version" ]; then
         sed -i 's|^\./moonlightui|echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor\necho 1608000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq\n\./moonlightui|' /usr/trimui/apps/moonlight/launch.sh
     fi
 
-    # Restore FW settings
-    if -f "/mnt/SDCARD/trimui/firmwares/Last_Automatic_Backup.txt"; then
-        Last_Automatic_Backup=$(cat /mnt/SDCARD/trimui/firmwares/Last_Automatic_Backup.txt)
-        if [ -f "/mnt/SDCARD/System/backups/firmware_settings/$current_device/$Last_Automatic_Backup" ]; then
-            echo "Restoring firmware settings from $Last_Automatic_Backup"
-            "/mnt/SDCARD/Apps/SystemTools/Menu/TOOLS/FW Settings Save-Load.sh" --restore "/mnt/SDCARD/System/backups/firmware_settings/$current_device/$Last_Automatic_Backup" joystick
-            "/mnt/SDCARD/Apps/SystemTools/Menu/TOOLS/FW Settings Save-Load.sh" --restore "/mnt/SDCARD/System/backups/firmware_settings/$current_device/$Last_Automatic_Backup" wifi
-        else
-            echo "No automatic backup found for $Last_Automatic_Backup"
-        fi
-    fi
-
     # we set the customization flag
     rm "/usr/trimui/fw_mod_done"
     echo $version >/usr/trimui/crossmix-version.txt
-    sync
 
     ################ CrossMix-OS SD card Customization ################
 
@@ -184,17 +172,23 @@ if [ "$version" != "$FW_patched_version" ]; then
 
     ################ Flash boot logo ################
     if [ "$CrossMix_Update" = "0" ]; then
-
-        read -r Current_device </etc/trimui_device.txt
-
-        if [ "$Current_device" = "tsp" ]; then
+        case "$Current_device" in
+        tsp | tsps)
             src_dir="/mnt/SDCARD/Apps/BootLogo/Images_1280x720"
-        else
+            ;;
+        brick)
             src_dir="/mnt/SDCARD/Apps/BootLogo/Images_1024x768"
-        fi
+            ;;
+        *)
+            src_dir="/mnt/SDCARD/Apps/BootLogo/Images_1280x720"
+            ;;
+        esac
 
-        "/mnt/SDCARD/Emus/_BootLogo/launch.sh" "$src_dir/- CrossMix-OS.bmp"
+        /mnt/SDCARD/Emus/_BootLogo/launch.sh "$src_dir/- CrossMix-OS.bmp"
     fi
+
+    sync
+
 fi
 
 ######################### CrossMix-OS at each boot #########################
@@ -205,4 +199,17 @@ echo "root:tina" | chpasswd
 # Apply current led configuration
 /mnt/SDCARD/System/etc/led_config.sh &
 
-hostname "TSP"
+case "$Current_device" in
+tsp)
+    hostname "TSP"
+    ;;
+tsps)
+    hostname "TSPS"
+    ;;
+brick)
+    hostname "BRICK"
+    ;;
+*)
+    hostname "TRIMUI"
+    ;;
+esac

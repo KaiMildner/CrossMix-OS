@@ -12,16 +12,7 @@ restore_file() {
     chown root:root "$path"
 }
 
-if ! read -r current_device </etc/trimui_device.txt; then
-    RES=$(fbset | awk '/geometry/ {print $2 "x" $3}')
-    if [ "$RES" = "1280x720" ]; then
-        current_device="tsp"
-    else
-        current_device="brick"
-    fi
-    echo -n $current_device >/etc/trimui_device.txt
-
-fi
+read -r Current_device </etc/trimui_device.txt
 
 # Function to show help
 show_help() {
@@ -37,6 +28,7 @@ show_help() {
     echo "  wifi                          Restore only wifi settings"
     echo "  joystick                      Restore only joystick calibration"
     echo "  mainui                        Restore only MainUI settings"
+    echo "  history                       Restore only command history"
     echo ""
     echo "Examples:"
     echo "  $0 --backup"
@@ -123,13 +115,14 @@ case "$selected_action" in
 
     # If not in command line mode, ask what to restore
     if [ -z "$restore_type" ]; then
-        selector_output=$(selector -fs 200 -t "Choose what you want to restore:" -c "All" "Wifi settings" "Joystick calibration" "MainUI settings")
+        selector_output=$(selector -fs 200 -t "Choose what you want to restore:" -c "All" "Wifi settings" "Joystick calibration" "MainUI settings" "Command history")
         selected_restore="${selector_output#*: }"
         case "$selected_restore" in
         "All") restore_type="all" ;;
         "Wifi settings") restore_type="wifi" ;;
         "Joystick calibration") restore_type="joystick" ;;
         "MainUI settings") restore_type="mainui" ;;
+        "Command history") restore_type="history" ;;
         *)
             infoscreen.sh -m "Exiting..."
             exit
@@ -154,6 +147,10 @@ case "$selected_action" in
     "mainui")
         restore_file "/mnt/UDISK/system.json"
         restore_message="MainUI settings restored."
+        ;;
+    "history")
+        restore_file "/root/.ash_history"
+        restore_message="Command history restored."
         ;;
     *)
         echo "No valid option selected."
