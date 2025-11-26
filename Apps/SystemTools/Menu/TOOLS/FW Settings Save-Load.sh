@@ -64,7 +64,7 @@ if [ $# -gt 0 ]; then
     esac
 else
     # Interactive mode - use selector
-    selector_output=$(selector -fs 200 -t "Choose an action to perform:                           (B to cancel)" -c "Backup" "Restore")
+    selector_output=$(selector -fs 200 -t "Choose an action to perform:                           (B to cancel)" -c "Backup" "Restore" | grep "You selected")
     selected_action="${selector_output#*: }"
 fi
 
@@ -99,7 +99,7 @@ case "$selected_action" in
 
     # If not in command line mode, ask the user to select the backup file
     if [ -z "$ARCHIVE_PATH" ]; then
-        selector_output=$(selector -fs 150 -t "Choose a backup file to restore:" -d "/mnt/SDCARD/System/backups/firmware_settings/$current_device/")
+        selector_output=$(selector -fs 150 -t "Choose a backup file to restore:" -d "/mnt/SDCARD/System/backups/firmware_settings/$current_device/" | grep "You selected")
         echo "$cleaned_input" | grep -q "No file selected" && {
             infoscreen.sh -m "Exiting..."
             exit 0
@@ -115,7 +115,7 @@ case "$selected_action" in
 
     # If not in command line mode, ask what to restore
     if [ -z "$restore_type" ]; then
-        selector_output=$(selector -fs 200 -t "Choose what you want to restore:" -c "All" "Wifi settings" "Joystick calibration" "MainUI settings" "Command history")
+        selector_output=$(selector -fs 200 -t "Choose what you want to restore:" -c "All" "Wifi settings" "Joystick calibration" "MainUI settings" "Command history" | grep "You selected")
         selected_restore="${selector_output#*: }"
         case "$selected_restore" in
         "All") restore_type="all" ;;

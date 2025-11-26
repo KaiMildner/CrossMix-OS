@@ -20,7 +20,7 @@ if [ $? -eq 10 ]; then
     done
 
     # Use eval to pass properly to selector
-    SELECTED_FILE=$(eval /mnt/SDCARD/System/bin/selector -fs 120 -c $FILE_LIST)
+    SELECTED_FILE=$(eval /mnt/SDCARD/System/bin/selector -fs 120 -c $FILE_LIST | grep "You selected")
     SELECTED_FILE=$(printf '%s\n' "$SELECTED_FILE" | sed 's/^.*: //')
 fi
 

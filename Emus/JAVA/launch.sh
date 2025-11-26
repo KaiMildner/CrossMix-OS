@@ -59,7 +59,7 @@ update_configs() {
 
 # Helper: launch selector and set resx/resy
 choose_resolution() {
-    selector_output=$(selector -t "Choose resolution for $rom_name:\n \n  (see https://tasemulators.github.io/freej2me-plus\n   for resolution database)" -fs 160 -c $resolutions)
+    selector_output=$(selector -t "Choose resolution for $rom_name:\n \n  (see https://tasemulators.github.io/freej2me-plus\n   for resolution database)" -fs 160 -c $resolutions | grep "You selected")
     selected="${selector_output#*: }"
     case "$selected" in
     "240x320")

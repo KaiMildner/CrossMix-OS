@@ -39,7 +39,7 @@ if [ -f "$LaunchPath" ]; then
     # Launcher selector
     /mnt/SDCARD/System/usr/trimui/scripts/button_state.sh X
     if [ $? -eq 10 ] && jq -e ".launchlist" "$Config"; then
-        selected=$(jq -c '.launchlist[] | .name' "$Config" | xargs selector -t "$RomDir launchers: " -c)
+        selected=$(jq -c '.launchlist[] | .name' "$Config" | xargs selector -t "$RomDir launchers: " -c | grep "You selected")
         if echo "$selected" | grep -q "You selected: "; then
             Launcher_name="${selected#*: }"
             Launcher=$(jq -r --arg name "$Launcher_name" \
