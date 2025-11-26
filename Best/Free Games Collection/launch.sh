@@ -10,6 +10,10 @@ Config="/mnt/SDCARD/Emus/$RomDir/config.json"
 Launcher=$(jq -r '.launch' "$Config")
 LaunchPath="/mnt/SDCARD/Emus/$RomDir/$Launcher"
 
+# Add LOG_FILE detection
+LOG_FILE="/tmp/log/messages"
+[ -f "/tmp/messages" ] && LOG_FILE="/tmp/messages"
+
 extension="${RomFullPath##*.}"
 if [ "$extension" = "txt" ]; then
     RomFullPath=$(cat "$RomFullPath" | head -n 1) # Trick to have shortcuts: the real ROM filename is inside the text file
@@ -45,7 +49,7 @@ if [ -f "$LaunchPath" ]; then
             Launcher=$(jq -r --arg name "$Launcher_name" \
                 '.launchlist[] | select(.name == $name) | .launch' "$Config")
             if [ -n "$Launcher" ]; then
-                echo "collection launcher: $Launcher_name dowork 0x" >>/tmp/log/messages
+                echo "collection launcher: $Launcher_name dowork 0x" >>"$LOG_FILE"
                 LaunchPath=/mnt/SDCARD/Emus/$RomDir/$Launcher
             fi
         fi

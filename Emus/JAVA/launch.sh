@@ -45,8 +45,12 @@ done
 
 infoscreen.sh -i "$Current_bg" -m "running ${rom_name}" &
 
+# Add LOG_FILE detection
+LOG_FILE="/tmp/log/messages"
+[ -f "/tmp/messages" ] && LOG_FILE="/tmp/messages"
+
 # Read last launcher command from logs
-Launcher=$(grep -i "dowork 0x" "/tmp/log/messages" | tail -n 1)
+Launcher=$(grep -i "dowork 0x" "$LOG_FILE" | tail -n 1)
 
 # Helper: delete other config folders and rename rms folder
 update_configs() {
