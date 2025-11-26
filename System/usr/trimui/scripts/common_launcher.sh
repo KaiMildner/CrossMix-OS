@@ -71,6 +71,12 @@ if grep -q ra64.trimui "$0"; then
     source $dir/FolderOverrideFinder.sh
     ra_audio_switcher.sh
     touch /var/trimui_inputd/ra_hotkey
+else
+    read -r Current_device </etc/trimui_device.txt
+    if [ "$Current_device" = "tsps" ]; then
+        echo 1 >/sys/class/drm/card0-DSI-1/rotate
+        echo 1 >/sys/class/drm/card0-DSI-1/force_rotate
+    fi
 fi
 
 cd "$EMU_DIR"
