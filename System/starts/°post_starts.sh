@@ -183,5 +183,5 @@ fi
 
 wifi_value=$(/usr/trimui/bin/systemval wifi)
 if [ "$wifi_value" -eq 1 ]; then
-	wifi_workaround &
+	wifi_workaround &   # (race condition between hardwareservice and MainUI in FW v1.1.0)
 fi

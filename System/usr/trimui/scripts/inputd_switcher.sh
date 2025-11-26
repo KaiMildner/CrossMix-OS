@@ -21,7 +21,7 @@ if [ "$device" = "brick" ]; then
     exit 1
 fi
 
-if [ -f "$bin_dir/trimui_inputd" ]; then
+if [ -f "/mnt/SDCARD/System/resources/${device}_inputd" ]; then
     cp /mnt/SDCARD/System/resources/${device}_inputd "$bin_dir/trimui_inputd"
     chmod +x "$bin_dir/trimui_inputd"
     sync
