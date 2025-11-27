@@ -1,6 +1,6 @@
 #!/bin/sh
 export LD_LIBRARY_PATH="/mnt/SDCARD/System/lib:/usr/trimui/lib:$LD_LIBRARY_PATH"
-read -r Current_device </etc/trimui_device.txt
+read -r current_device </etc/trimui_device.txt
 Current_Theme=$(/usr/trimui/bin/systemval theme)
 Current_bg="$Current_Theme/skin/bg.png"
 if [ ! -f "$Current_bg" ]; then
@@ -44,7 +44,7 @@ if [ "$version" != "$FW_patched_version" ]; then
     # Disable Stock Reader app
     mv /usr/trimui/apps/bookreader/config.json /usr/trimui/apps/bookreader/config_disabled.json
 
-    case "$Current_device" in
+    case "$current_device" in
     tsp) ;;
     tsps)
         # fix GL symbolic links for mali drivers
@@ -189,7 +189,7 @@ if [ "$version" != "$FW_patched_version" ]; then
 
     ################ Flash boot logo ################
     if [ "$CrossMix_Update" = "0" ]; then
-        case "$Current_device" in
+        case "$current_device" in
         tsp | tsps)
             src_dir="/mnt/SDCARD/Apps/BootLogo/Images_1280x720"
             ;;
@@ -216,7 +216,7 @@ echo "root:tina" | chpasswd
 # Apply current led configuration
 /mnt/SDCARD/System/etc/led_config.sh &
 
-case "$Current_device" in
+case "$current_device" in
 tsp)
     hostname "TSP"
     ;;

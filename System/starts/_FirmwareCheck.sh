@@ -2,28 +2,27 @@
 PATH="/mnt/SDCARD/System/bin:/mnt/SDCARD/System/usr/trimui/scripts/:$PATH"
 export LD_LIBRARY_PATH="/mnt/SDCARD/System/lib:/usr/trimui/lib:$LD_LIBRARY_PATH"
 
-
 if ! read -r current_device </etc/trimui_device.txt; then
-	read -r -d '' cpuinfo < /proc/cpuinfo
+    read -r -d '' cpuinfo </proc/cpuinfo
     case "$cpuinfo" in
-        *TG5040*)
-            current_device="tsp"
-			Current_FW_Revision=$(grep 'DISTRIB_DESCRIPTION' /etc/openwrt_release | cut -d '.' -f 3)
-			FIRMWARE_FILENAME="trimui_tg5040.awimg"
-            ;;
-        *TG5050*)
-            current_device="tsps"
-			Current_FW_Revision=$(cat /etc/version)
-			FIRMWARE_FILENAME="trimui_tg5050.awimg"
-            ;;
-        *TG3040*)
-            current_device="brick"
-			Current_FW_Revision=$(grep 'DISTRIB_DESCRIPTION' /etc/openwrt_release | cut -d '.' -f 3)
-			FIRMWARE_FILENAME="trimui_tg3040.awimg"
-            ;;
-        *)
-            current_device="unknown"
-            ;;
+    *TG5040*)
+        current_device="tsp"
+        Current_FW_Revision=$(grep 'DISTRIB_DESCRIPTION' /etc/openwrt_release | cut -d '.' -f 3)
+        FIRMWARE_FILENAME="trimui_tg5040.awimg"
+        ;;
+    *TG5050*)
+        current_device="tsps"
+        Current_FW_Revision=$(cat /etc/version)
+        FIRMWARE_FILENAME="trimui_tg5050.awimg"
+        ;;
+    *TG3040*)
+        current_device="brick"
+        Current_FW_Revision=$(grep 'DISTRIB_DESCRIPTION' /etc/openwrt_release | cut -d '.' -f 3)
+        FIRMWARE_FILENAME="trimui_tg3040.awimg"
+        ;;
+    *)
+        current_device="unknown"
+        ;;
     esac
     echo -n $current_device >/etc/trimui_device.txt
 fi
@@ -34,31 +33,29 @@ if [ "$current_device" != "$last_device" ]; then
     touch /tmp/device_changed
 fi
 
-
-
 FIRMWARE_DIR="/mnt/SDCARD/trimui/firmwares"
 FW_ARCHIVE_FILE=$(ls "$FIRMWARE_DIR"/firmware_"${current_device}"_v*.7z* 2>/dev/null | head -n1)
 
 # Exit if no firmware is found
 if [ -f "$FW_ARCHIVE_FILE" ]; then
-	echo "Found firmware: $FW_ARCHIVE_FILE"
+    echo "Found firmware: $FW_ARCHIVE_FILE"
 
-	# Extract the filename without the path
-	fw_basename=$(basename "$FW_ARCHIVE_FILE")
-	# Remove the prefix "firmware_${current_device}_v"
-	fw_info=${fw_basename#firmware_"${current_device}"_v}
-	# Remove the extension ".7z.001" or ".7z"
-	fw_info=${fw_info%.7z.001}
-	fw_info=${fw_info%.7z}
+    # Extract the filename without the path
+    fw_basename=$(basename "$FW_ARCHIVE_FILE")
+    # Remove the prefix "firmware_${current_device}_v"
+    fw_info=${fw_basename#firmware_"${current_device}"_v}
+    # Remove the extension ".7z.001" or ".7z"
+    fw_info=${fw_info%.7z.001}
+    fw_info=${fw_info%.7z}
 
-	# Separate version and revision (separated by '_')
-	# Example: "1.1.0_20250505" -> version="1.1.0", revision="20250505"
-	Required_FW_Version=${fw_info%_*}
-	Required_FW_Revision=${fw_info#*_}
+    # Separate version and revision (separated by '_')
+    # Example: "1.1.0_20250505" -> version="1.1.0", revision="20250505"
+    Required_FW_Version=${fw_info%_*}
+    Required_FW_Revision=${fw_info#*_}
 
-	# Print extracted version and revision
-	echo "Current  FW Revision: $Current_FW_Revision"
-	echo "Required FW Revision: $Required_FW_Revision"
+    # Print extracted version and revision
+    echo "Current  FW Revision: $Current_FW_Revision"
+    echo "Required FW Revision: $Required_FW_Revision"
 else
     echo "No firmware found for device $current_device"
     Required_FW_Revision=""
@@ -66,9 +63,7 @@ fi
 
 # ----------------------------------------------------------------------------
 
-
 ################ check min Firmware version required ################
-
 
 # Function to check CRC and update message
 check_firmware_crc() {
@@ -123,11 +118,7 @@ diagnose() {
     fi
 }
 
-
-
 #######################################################
-
-
 
 if [ -z "$Current_FW_Revision" ] || [ -z "$Required_FW_Revision" ]; then
 
@@ -189,7 +180,6 @@ else
         fi
 
         sync
-
 
         message="Current   FW version: $Current_FW_Version - $Current_FW_Revision\nRequired FW version: $Required_FW_Version - $Required_FW_Revision\n \n \n"
         crc_verified=false
@@ -297,8 +287,6 @@ else
 fi
 
 ################ check if a CrossMix-OS update is available ################
-
-
 
 # Find the update file
 UPDATE_FILE=$(find /mnt/SDCARD -maxdepth 1 -name "CrossMix-OS_v*.zip" -print -quit)

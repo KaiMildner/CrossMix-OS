@@ -3,6 +3,16 @@ export LD_LIBRARY_PATH=./lib:/mnt/SDCARD/System/lib:$LD_LIBRARY_PATH
 export PATH="/mnt/SDCARD/System/bin:/mnt/SDCARD/System/usr/trimui/scripts:$PATH"
 SEVENZ="/mnt/SDCARD/System/bin/7zz"
 
+read -r current_device </etc/trimui_device.txt
+case "$current_device" in
+tsps)
+    wpa_supplicant_PATH=etc/wifi/wpa_supplicant/wpa_supplicant.conf
+    ;;
+*)
+    wpa_supplicant_PATH=etc/wifi/wpa_supplicant.conf
+    ;;
+esac
+
 # Function to restore individual files from the archive
 restore_file() {
     path="$1"
@@ -11,8 +21,6 @@ restore_file() {
     chmod 644 "$path"
     chown root:root "$path"
 }
-
-read -r Current_device </etc/trimui_device.txt
 
 # Function to show help
 show_help() {
@@ -70,14 +78,14 @@ fi
 
 case "$selected_action" in
 "Backup")
-    echo "Backup mode"
+    echo "Backup mode for $current_device"
     ARCHIVE_PATH="/mnt/SDCARD/System/backups/firmware_settings/$current_device/backup_$(date +'%Y%m%d-%Hh%M-%S').7z"
     mkdir -p "/mnt/SDCARD/System/backups/firmware_settings/$current_device/"
     cd /
 
     # Create the backup archive including the specified files
     $SEVENZ a "$ARCHIVE_PATH" \
-        etc/wifi/wpa_supplicant.conf \
+        "$wpa_supplicant_PATH" \
         mnt/UDISK/system.json \
         mnt/UDISK/joypad.config \
         mnt/UDISK/joypad_right.config \
@@ -95,7 +103,7 @@ case "$selected_action" in
 
 "Restore")
 
-    echo "Restore mode"
+    echo "Restore mode for $current_device"
 
     # If not in command line mode, ask the user to select the backup file
     if [ -z "$ARCHIVE_PATH" ]; then
@@ -136,7 +144,7 @@ case "$selected_action" in
         restore_message="All settings restored."
         ;;
     "wifi")
-        restore_file "/etc/wifi/wpa_supplicant.conf"
+        restore_file "/$wpa_supplicant_PATH"
         restore_message="Wifi settings restored."
         ;;
     "joystick")
