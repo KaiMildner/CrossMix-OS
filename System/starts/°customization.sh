@@ -44,6 +44,23 @@ if [ "$version" != "$FW_patched_version" ]; then
     # Disable Stock Reader app
     mv /usr/trimui/apps/bookreader/config.json /usr/trimui/apps/bookreader/config_disabled.json
 
+    case "$Current_device" in
+    tsp) ;;
+    tsps)
+        # fix GL symbolic links for mali drivers
+        cd /usr/lib
+        ln -s libmali.so libIMGegl.so
+        ln -s libmali.so libGLES_CM.so
+        ln -s libmali.so libGLESv1_CM.so
+        ln -s libmali.so libGLESv2.so
+        ln -s libmali.so libglslcompiler.so
+        ln -s libmali.so libsrv_um.so
+        ln -s libmali.so libusc.so
+        ;;
+    brick) ;;
+    *) ;;
+    esac
+
     # add language files
     if [ ! -e "/usr/trimui/res/skin/pl.lang" ]; then
         cp "/mnt/SDCARD/trimui/res/lang/"*.lang "/usr/trimui/res/lang/"
