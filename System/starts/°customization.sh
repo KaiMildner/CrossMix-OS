@@ -31,7 +31,6 @@ if [ "$version" != "$FW_patched_version" ]; then
     rm -rf /usr/trimui/res/sound/bgm2.mp3
     swapoff -a
     rm -rf /swapfile
-    rm /bin/busybox.bak
     cp "/mnt/SDCARD/trimui/res/skin/bg.png" "/usr/trimui/res/skin/"
 
     # USB Storage app update
@@ -216,19 +215,4 @@ echo "root:tina" | chpasswd
 # Apply current led configuration
 /mnt/SDCARD/System/etc/led_config.sh &
 
-case "$current_device" in
-tsp)
-    hostname "TSP"
-    ;;
-tsps)
-    hostname "TSPS"
-    /bin/busybox.old modprobe aic8800_fdrv.ko &
-    /bin/busybox.old modprobe aic8800_btlpm.ko &
-    ;;
-brick)
-    hostname "BRICK"
-    ;;
-*)
-    hostname "TRIMUI"
-    ;;
-esac
+
