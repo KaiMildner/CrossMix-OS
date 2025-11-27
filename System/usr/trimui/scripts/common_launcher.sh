@@ -72,8 +72,8 @@ if grep -q ra64.trimui "$0"; then
     ra_audio_switcher.sh
     touch /var/trimui_inputd/ra_hotkey
 else
-    read -r Current_device </etc/trimui_device.txt
-    if [ "$Current_device" = "tsps" ]; then
+    read -r current_device </etc/trimui_device.txt
+    if [ "$current_device" = "tsps" ]; then
         echo 1 >/sys/class/drm/card0-DSI-1/rotate
         echo 1 >/sys/class/drm/card0-DSI-1/force_rotate
     fi

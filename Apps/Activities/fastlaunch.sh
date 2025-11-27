@@ -3,8 +3,8 @@ pid=$(pidof MainUI)
 if [ -n "$pid" ]; then
     pkill -STOP runtrimui.sh 2>/dev/null
     kill -9 "$pid" &
-    read -r Current_device </etc/trimui_device.txt
-    if [ "$Current_device" = "tsps" ]; then
+    read -r current_device </etc/trimui_device.txt
+    if [ "$current_device" = "tsps" ]; then
         echo 1 >/sys/class/drm/card0-DSI-1/rotate
         echo 1 >/sys/class/drm/card0-DSI-1/force_rotate
     fi

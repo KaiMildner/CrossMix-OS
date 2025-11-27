@@ -338,8 +338,8 @@ extract_7z() {
 }
 
 TG5050_rotate_screen() {
-    read -r Current_device </etc/trimui_device.txt
-    if [ "$Current_device" = "tsps" ]; then
+    read -r current_device </etc/trimui_device.txt
+    if [ "$current_device" = "tsps" ]; then
         echo 1 >/sys/class/drm/card0-DSI-1/rotate
         echo 1 >/sys/class/drm/card0-DSI-1/force_rotate
     fi
