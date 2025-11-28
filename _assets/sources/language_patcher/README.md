@@ -36,7 +36,7 @@ This shell script is designed to run on the device. It applies the appropriate p
 
 *   **Input**:
     *   Reference language files (expected in `/mnt/SDCARD/trimui/res/lang/`).
-    *   Patch files (expected in `/mnt/SDCARD/trimui/res/lang/patches/`).
+    *   Patch files (expected in `/mnt/SDCARD/trimui/res/lang/`).
 *   **Output**:
     *   Patched language files written to `/usr/trimui/res/lang/`.
 *   **Logic**:
@@ -58,7 +58,7 @@ This shell script is designed to run on the device. It applies the appropriate p
 
 ## Workflow
 
-1.  Update `reference/` with language files from current CrossMix.
+1.  Update `reference/` with language files from current CrossMix, complete with files from tg5040 stock if some are missing.
 2.  Update each stock language files for each device 
 3.  Run `generate_patches.py` to update the `.patch` files in `patches/`.
 3.  Deploy the `.patch` files (in `SDCARD/trimui/res/lang/`) and `lang_patches.sh` to SD card script folder.

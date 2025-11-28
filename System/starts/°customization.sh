@@ -215,4 +215,9 @@ echo "root:tina" | chpasswd
 # Apply current led configuration
 /mnt/SDCARD/System/etc/led_config.sh &
 
+######################### Device Type customization #########################
 
+if [ -f "/tmp/device_changed" ]; then
+    # patching language files for MainUI device specific texts
+    /mnt/SDCARD/System/usr/trimui/scripts/lang_patches.sh "$current_device"
+fi

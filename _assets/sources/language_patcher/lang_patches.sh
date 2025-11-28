@@ -10,7 +10,7 @@ if [ -z "$CURRENT_DEVICE" ]; then
 fi
 
 # Define paths
-PATCH_DIR="/mnt/SDCARD/trimui/res/lang/patches"
+PATCH_DIR="/mnt/SDCARD/trimui/res/lang"
 TARGET_DIR="/usr/trimui/res/lang"
 REF_DIR="/mnt/SDCARD/trimui/res/lang"
 
