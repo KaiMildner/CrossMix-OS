@@ -150,7 +150,8 @@ else
 
             # make some place
             rm -rf /usr/trimui/apps/zformatter_fat32/
-            rm -rf /usr/trimui/res/sound/bgm2.mp3
+            rm /usr/trimui/res/sound/bgm2.mp3
+            rm /etc/1.mp4
             swapoff -a
             rm -rf /swapfile
 
