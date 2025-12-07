@@ -220,4 +220,10 @@ echo "root:tina" | chpasswd
 if [ -f "/tmp/device_changed" ]; then
     # patching language files for MainUI device specific texts
     /mnt/SDCARD/System/usr/trimui/scripts/lang_patches.sh "$current_device"
+
+    # copy of the most up-to-date version of retroarch for this device
+    files=$(ls /mnt/SDCARD/RetroArch/ra64.trimui_${current_device}_*.bin 2>/dev/null)
+    latest_file=$(echo "$files" | sort -V | tail -n 1)
+    cp "$latest_file" "/mnt/SDCARD/RetroArch/ra64.trimui"
+
 fi
