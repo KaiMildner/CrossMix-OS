@@ -12,7 +12,7 @@ if ! read -r current_device </etc/trimui_device.txt; then
         ;;
     *TG5050*)
         current_device="tsps"
-        Current_FW_Revision=$(cat /etc/version)
+        Current_FW_Revision=$(uname -v | cut -d'#' -f2 | cut -d' ' -f1)
         FIRMWARE_FILENAME="trimui_tg5050.awimg"
         ;;
     *TG3040*)
@@ -30,7 +30,7 @@ fi
 read -r last_device </mnt/SDCARD/System/etc/last_device.txt
 if [ "$current_device" != "$last_device" ]; then
     echo -n $current_device >/mnt/SDCARD/System/etc/last_device.txt
-    touch /tmp/device_changed
+    echo -n $last_device >/tmp/device_changed
 fi
 
 FIRMWARE_DIR="/mnt/SDCARD/trimui/firmwares"
@@ -225,6 +225,7 @@ else
                 diagnose
                 exit 1
             fi
+            sync
             message="${message}OK\n"
             pkill presenter
             sleep 0.5
