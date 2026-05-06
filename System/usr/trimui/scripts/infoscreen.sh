@@ -179,7 +179,7 @@ image=$(determine_image_path "$image")
 
 # Set the library path
 PATH="/mnt/SDCARD/System/bin:$PATH"
-export LD_LIBRARY_PATH="/mnt/SDCARD/System/lib:/usr/trimui/lib:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="/usr/lib:/mnt/SDCARD/System/lib:/usr/trimui/lib:$LD_LIBRARY_PATH"
 
 touch /var/trimui_inputd/sticks_disabled
 
