@@ -46,8 +46,10 @@ jobs:
       - name: Zipping release
         run: |
           shopt -s dotglob
-          cd /home/runner/work/CrossMix-OS/CrossMix-OS
-          zip -r "/home/runner/work/CrossMix-OS/CrossMix-OS_v${{ env.BUILD_VERSION }}.zip" ./*
+          BASE="/home/runner/work/CrossMix-OS"
+          cd "$BASE/CrossMix-OS"
+          zip -r "$BASE/CrossMix-OS_v${{ env.BUILD_VERSION }}.zip" ./* --exclude "./trimui/firmwares/*"
+          zip -r "$BASE/CrossMix-OS_v${{ env.BUILD_VERSION }}_firmwares.zip" ./trimui/firmwares/*
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
@@ -55,4 +57,6 @@ jobs:
           name: "CrossMix-OS v${{ env.BUILD_VERSION }}"
           prerelease: false
           draft: true
-          files: "/home/runner/work/CrossMix-OS/CrossMix-OS_v${{ env.BUILD_VERSION }}.zip"
+          files: |
+            /home/runner/work/CrossMix-OS/CrossMix-OS_v${{ env.BUILD_VERSION }}.zip
+            /home/runner/work/CrossMix-OS/CrossMix-OS_v${{ env.BUILD_VERSION }}_firmwares.zip
