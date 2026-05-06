@@ -49,10 +49,10 @@ jobs:
           cd /home/runner/work/CrossMix-OS/CrossMix-OS
           zip -r "/home/runner/work/CrossMix-OS/CrossMix-OS_v${{ env.BUILD_VERSION }}.zip" ./*
       - name: Create Release
-        uses: marvinpinto/action-automatic-releases@latest
+        uses: softprops/action-gh-release@v2
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          title: "CrossMix-OS v${{ env.BUILD_VERSION }}"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: "CrossMix-OS v${{ env.BUILD_VERSION }}"
           prerelease: false
-          files: "/home/runner/work/CrossMix-OS/CrossMix-OS_v${{ env.BUILD_VERSION }}.zip"
           draft: true
+          files: "/home/runner/work/CrossMix-OS/CrossMix-OS_v${{ env.BUILD_VERSION }}.zip"
