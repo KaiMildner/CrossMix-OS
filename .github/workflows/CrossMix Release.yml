@@ -25,7 +25,7 @@ jobs:
       - name: Install 7-Zip
         run: |
           mkdir -p /home/runner/work/CrossMix-OS/tools
-          wget https://www.7-zip.org/a/7z2406-linux-x64.tar.xz -P /home/runner/work/CrossMix-OS/tools
+          wget https://www.7-zip.org/a/7z2601-linux-x64.tar.xz -P /home/runner/work/CrossMix-OS/tools
           tar xvf /home/runner/work/CrossMix-OS/tools/7z2406-linux-x64.tar.xz -C /home/runner/work/CrossMix-OS/tools
           sudo cp /home/runner/work/CrossMix-OS/tools/7zz /usr/local/bin/
       - name: Extract RetroArch cores
