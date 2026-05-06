@@ -226,4 +226,19 @@ if [ -f "/tmp/device_changed" ]; then
     latest_file=$(echo "$files" | sort -V | tail -n 1)
     cp "$latest_file" "/mnt/SDCARD/RetroArch/ra64.trimui"
 
+    # set optimal RetroArch video driver per device
+    RA_CFG="/mnt/SDCARD/RetroArch/retroarch.cfg"
+    case "$current_device" in
+    tsps)
+        sed -i 's/^video_driver = .*/video_driver = "glcore"/' "$RA_CFG"
+        sed -i 's/^video_context_driver = .*/video_context_driver = ""/' "$RA_CFG"
+        echo "Launcher_name=PPSSPP 1.17.1 - Vulkan" > /mnt/SDCARD/Emus/PSP/launchers.cfg
+        ;;
+    tsp | brick)
+        sed -i 's/^video_driver = .*/video_driver = "gl"/' "$RA_CFG"
+        sed -i 's/^video_context_driver = .*/video_context_driver = "gl_sdl"/' "$RA_CFG"
+        echo "Launcher_name=PPSSPP 1.17.1 - OpenGL" > /mnt/SDCARD/Emus/PSP/launchers.cfg
+        ;;
+    esac
+
 fi

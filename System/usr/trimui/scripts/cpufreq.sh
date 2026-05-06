@@ -5,32 +5,25 @@ min_id="$2"
 max_id="$3"
 active_cores="$4"
 
+AVAILABLE_FREQS=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies 2>/dev/null)
+if [ -z "$AVAILABLE_FREQS" ]; then
+	AVAILABLE_FREQS="408000 600000 816000 1008000 1200000 1416000 1608000 1800000 2000000"
+fi
+FREQ_LIST=$(echo "$AVAILABLE_FREQS" | tr ' ' '\n' | sort -n | tr '\n' ' ')
+MAX_ID=$(echo "$FREQ_LIST" | wc -w | tr -d ' ')
+MAX_ID=$((MAX_ID - 1))
+
 id_to_freq() {
-	case $1 in
-	0) echo 408000 ;;
-	1) echo 600000 ;;
-	2) echo 816000 ;;
-	3) echo 1008000 ;;
-	4) echo 1200000 ;;
-	5) echo 1416000 ;;
-	6) echo 1608000 ;;
-	7) echo 1800000 ;;
-	8) echo 2000000 ;;
-	esac
+	echo "$FREQ_LIST" | tr ' ' '\n' | sed -n "$((${1} + 1))p"
 }
 
 freq_to_id() {
-	case $1 in
-	408000) echo 0 ;;
-	600000) echo 1 ;;
-	816000) echo 2 ;;
-	1008000) echo 3 ;;
-	1200000) echo 4 ;;
-	1416000) echo 5 ;;
-	1608000) echo 6 ;;
-	1800000) echo 7 ;;
-	2000000) echo 8 ;;
-	esac
+	local target="$1"
+	local i=0
+	for f in $FREQ_LIST; do
+		[ "$f" = "$target" ] && echo $i && return
+		i=$((i + 1))
+	done
 }
 
 # display current CPU settings and usage examples
@@ -75,10 +68,10 @@ fi
 if [ "$governor" != "interactive" ] && [ "$governor" != "ondemand" ] && [ "$governor" != "performance" ] && [ "$governor" != "powersave" ] && [ "$governor" != "conservative" ]; then
 	echo "cpufreq.sh: Invalid governor."
 	exit 1
-elif [ $min_id -lt 0 ] || [ $min_id -gt 8 ]; then
+elif [ $min_id -lt 0 ] || [ $min_id -gt $MAX_ID ]; then
 	echo "cpufreq.sh: Invalid min frequency ID."
 	exit 1
-elif [ $max_id -lt $min_id ] || [ $max_id -gt 8 ]; then
+elif [ $max_id -lt $min_id ] || [ $max_id -gt $MAX_ID ]; then
 	echo "cpufreq.sh: Invalid max frequency ID."
 	exit 1
 fi

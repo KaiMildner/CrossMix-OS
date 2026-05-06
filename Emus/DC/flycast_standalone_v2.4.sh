@@ -5,6 +5,14 @@ cpufreq.sh performance 7 7
 # cwd is EMU_DIR
 cd flycast_v2.4
 
+read -r current_device </etc/trimui_device.txt
+EMU_CFG="$PWD/config/emu.cfg"
+if [ "$current_device" = "tsps" ]; then
+    sed -i 's/^pvr.rend = .*/pvr.rend = 4/' "$EMU_CFG"
+else
+    sed -i 's/^pvr.rend = .*/pvr.rend = 0/' "$EMU_CFG"
+fi
+
 export LD_LIBRARY_PATH="/mnt/SDCARD/Emus/DC/flycast_v1.0/lib:$LD_LIBRARY_PATH"
 export FLYCAST_BIOS_DIR="/mnt/SDCARD/BIOS/dc/"
 export FLYCAST_DATA_DIR="$FLYCAST_BIOS_DIR/flycast/"
