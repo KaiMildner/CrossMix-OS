@@ -48,8 +48,9 @@ jobs:
           shopt -s dotglob
           BASE="/home/runner/work/CrossMix-OS"
           cd "$BASE/CrossMix-OS"
-          zip -r "$BASE/CrossMix-OS_v${{ env.BUILD_VERSION }}.zip" ./* --exclude "./trimui/firmwares/*"
+          zip -r "$BASE/CrossMix-OS_v${{ env.BUILD_VERSION }}.zip" ./* --exclude "./trimui/firmwares/*" --exclude "./RetroArch/.retroarch/cores/*"
           zip -r "$BASE/CrossMix-OS_v${{ env.BUILD_VERSION }}_firmwares.zip" ./trimui/firmwares/*
+          zip -r "$BASE/CrossMix-OS_v${{ env.BUILD_VERSION }}_cores.zip" ./RetroArch/.retroarch/cores/*
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
@@ -60,3 +61,4 @@ jobs:
           files: |
             /home/runner/work/CrossMix-OS/CrossMix-OS_v${{ env.BUILD_VERSION }}.zip
             /home/runner/work/CrossMix-OS/CrossMix-OS_v${{ env.BUILD_VERSION }}_firmwares.zip
+            /home/runner/work/CrossMix-OS/CrossMix-OS_v${{ env.BUILD_VERSION }}_cores.zip
