@@ -55,6 +55,14 @@ if [ "$version" != "$FW_patched_version" ]; then
         ln -s libmali.so libglslcompiler.so
         ln -s libmali.so libsrv_um.so
         ln -s libmali.so libusc.so
+        # fix SDL2 symlinks for PortMaster
+        ln -sf /usr/lib/libSDL2-2.0.so.0 /usr/trimui/lib/libSDL2-2.0.so.0
+        ln -sf /usr/lib/libSDL2-2.0.so.0 /usr/trimui/lib/libSDL2.so
+        ln -sf /usr/lib/libSDL2_mixer-2.0.so.0 /usr/trimui/lib/libSDL2_mixer-2.0.so.0
+        ln -sf /usr/lib/libSDL2_image-2.0.so.0 /usr/trimui/lib/libSDL2_image-2.0.so.0
+        ln -sf /usr/lib/libSDL2_ttf-2.0.so.0 /usr/trimui/lib/libSDL2_ttf-2.0.so.0
+        ln -sf /usr/lib/libSDL2_gfx-1.0.so.0 /usr/trimui/lib/libSDL2_gfx-1.0.so.0
+        ln -sf /usr/lib/libSDL2_gfx-1.0.so.0 /usr/trimui/lib/libSDL2_gfx.so
         ;;
     brick) ;;
     *) ;;
@@ -214,6 +222,17 @@ echo "root:tina" | chpasswd
 
 # Apply current led configuration
 /mnt/SDCARD/System/etc/led_config.sh &
+
+# PortMaster SDL2 symlinks (TSPS)
+if [ "$current_device" = "tsps" ]; then
+    [ ! -L /usr/trimui/lib/libSDL2-2.0.so.0 ] && ln -sf /usr/lib/libSDL2-2.0.so.0 /usr/trimui/lib/libSDL2-2.0.so.0
+    [ ! -L /usr/trimui/lib/libSDL2.so ] && ln -sf /usr/lib/libSDL2-2.0.so.0 /usr/trimui/lib/libSDL2.so
+    [ ! -L /usr/trimui/lib/libSDL2_mixer-2.0.so.0 ] && ln -sf /usr/lib/libSDL2_mixer-2.0.so.0 /usr/trimui/lib/libSDL2_mixer-2.0.so.0
+    [ ! -L /usr/trimui/lib/libSDL2_image-2.0.so.0 ] && ln -sf /usr/lib/libSDL2_image-2.0.so.0 /usr/trimui/lib/libSDL2_image-2.0.so.0
+    [ ! -L /usr/trimui/lib/libSDL2_ttf-2.0.so.0 ] && ln -sf /usr/lib/libSDL2_ttf-2.0.so.0 /usr/trimui/lib/libSDL2_ttf-2.0.so.0
+    [ ! -L /usr/trimui/lib/libSDL2_gfx-1.0.so.0 ] && ln -sf /usr/lib/libSDL2_gfx-1.0.so.0 /usr/trimui/lib/libSDL2_gfx-1.0.so.0
+    [ ! -L /usr/trimui/lib/libSDL2_gfx.so ] && ln -sf /usr/lib/libSDL2_gfx-1.0.so.0 /usr/trimui/lib/libSDL2_gfx.so
+fi
 
 ######################### Device Type customization #########################
 
